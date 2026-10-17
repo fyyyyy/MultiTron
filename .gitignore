@@ -1,0 +1,11 @@
+/build/
+/build-*/
+/.vs/
+*.exe
+*.pdb
+*.log
+/third_party/
+/node_modules/
+.DS_Store
+.env
+.env.*

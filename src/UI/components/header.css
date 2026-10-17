@@ -1,0 +1,109 @@
+router-header {
+  display: block;
+}
+
+header {
+  height: 84px;
+  display: flex;
+  align-items: center;
+  padding: 0 34px;
+  border-bottom: 1px solid #26394a;
+  background: #091724;
+  position: relative;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  font-size: 31px;
+  font-weight: 700;
+}
+.brand-copy { display: flex; align-items: flex-start; margin-left: 10px; }
+.brand-name { display: flex; flex-direction: column; align-items: flex-end; }
+.beta {
+  margin-top: 2px;
+  color: #9eb1c2;
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1;
+}
+.settings-actions {
+  position: absolute;
+  left: calc(50% - 256px);
+  display: grid;
+  gap: 3px;
+}
+.settings-actions > div { display: flex; gap: 6px; }
+.settings-actions button {
+  padding: 5px 9px;
+  border: 1px solid #315067;
+  border-radius: 4px;
+  color: #b9ccdb;
+  background: #102536;
+  font-size: 11px;
+  font-weight: 650;
+}
+.settings-actions button:hover { border-color: #4d7897; color: #e9f1fa; background: #19364b; }
+#loadedSettingsFile { color: #71899b; font-size: 10px; text-align: center; }
+.logo {
+  width: 49px;
+  height: 49px;
+  border: 0;
+  border-radius: 50%;
+  background: url("../logo-header.png") center / 100% no-repeat;
+}
+.session-stats {
+  position: absolute;
+  top: 9px;
+  right: 34px;
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  column-gap: 13px;
+  align-items: center;
+}
+.stats-units {
+  display: flex;
+  overflow: hidden;
+  border: 1px solid #26394a;
+  border-radius: 4px;
+}
+.stats-units button {
+  padding: 3px 5px;
+  border: 0;
+  color: #8fa7b9;
+  background: transparent;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.stats-units button.active {
+  color: #091724;
+  background: #2bc6f2;
+}
+.stats-units button:not(.active):hover {
+  color: #e9f1fa;
+  background: #1b3446;
+}
+.stats-title {
+  color: #8fa7b9;
+  font-size: 11px;
+  font-style: normal;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+#sessionMetrics {
+  display: grid;
+  grid-template-columns: repeat(2, 128px);
+  column-gap: 22px;
+  row-gap: 5px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.session-label {
+  color: #8fa7b9;
+  font-size: 11px;
+}
+.session-value {
+  font-weight: 700;
+}

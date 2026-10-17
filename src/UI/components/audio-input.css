@@ -1,0 +1,78 @@
+router-audio-input {
+  display: block;
+}
+.audio-rpm {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid #176e8c;
+  border-radius: 7px;
+  background: #176e8c;
+}
+.audio-rpm-value,
+.audio-signal {
+  padding: 10px 12px 8px;
+  color: #9eddf0;
+  background: #0c2634;
+}
+.audio-signal-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-weight: 700;
+}
+.audio-signal-header strong {
+  color: #1f9fff;
+  font-size: 20px;
+}
+.audio-rpm-value canvas {
+  display: block;
+  width: 100%;
+  height: 110px;
+  margin-top: 3px;
+}
+.audio-chart {
+  display: flex;
+  align-items: stretch;
+  gap: 7px;
+  height: 110px;
+  margin-top: 3px;
+}
+.audio-chart canvas {
+  display: block;
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  margin: 0;
+}
+.threshold-control {
+  position: relative;
+  display: flex;
+  width: 50px;
+  align-items: center;
+  justify-content: center;
+  color: #e7a83a;
+  font-size: 11px;
+}
+.threshold-control input {
+  appearance: slider-vertical;
+  -webkit-appearance: slider-vertical;
+  width: 18px;
+  height: 86px;
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 0;
+  accent-color: #e7a83a;
+}
+.threshold-control b {
+  position: absolute;
+  top: 20px;
+  left: 28px;
+  color: #8fa7b9;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}

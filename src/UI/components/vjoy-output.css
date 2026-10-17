@@ -1,0 +1,40 @@
+router-vjoy-output {
+  display: flex;
+  flex-direction: column;
+}
+router-vjoy-output > #visual { display: none !important; }
+.vjoy-panel {
+  order: -1;
+}
+.vjoy-axis-field {
+  margin-top: 14px;
+}
+.visual {
+  position: relative;
+  flex: 1;
+  min-height: 250px;
+  overflow: hidden;
+  border: 1px solid #2d4354;
+  border-radius: 9px;
+  background: #0b1722;
+}
+.dot.output {
+  box-shadow: 0 0 12px #42db75;
+}
+.output-reading {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 12px;
+}
+.unscaled {
+  display: none;
+  color: #8fa7b9;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.unscaled b {
+  font-size: 22px;
+  letter-spacing: 0;
+}

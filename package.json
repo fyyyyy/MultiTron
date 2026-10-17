@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "scripts": {
+    "build:ui": "esbuild src/UI/components.ts --bundle --format=iife --target=es2018 --outfile=src/UI/components.js",
+    "dev": "vite"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "lit": "^3.3.0",
+    "prettier": "^3.9.5",
+    "vite": "^7.0.0"
+  }
+}

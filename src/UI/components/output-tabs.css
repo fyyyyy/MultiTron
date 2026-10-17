@@ -1,0 +1,37 @@
+router-output-tabs {
+  display: block;
+}
+.outtabs {
+  display: flex;
+  order: -1;
+  gap: 7px;
+  margin: 0 0 16px;
+  border-bottom: 1px solid #2c4152;
+}
+.outtab {
+  cursor: pointer;
+  flex: 0 0 auto;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  padding: 11px 16px;
+  color: #9eb1c2;
+  background: transparent;
+  font: inherit;
+  font-weight: 650;
+}
+.outtab.active {
+  color: #fff;
+  border-bottom-color: #20c6ee;
+}
+.outtab:not(.is-disabled):hover {
+  color: #fff;
+  background: #142b3b;
+}
+.outtab.is-disabled {
+  color: #e9f1fa;
+  text-decoration: line-through;
+}
+.output-label {
+  padding: 0 8px 0 2px;
+}

@@ -1,0 +1,39 @@
+router-xbox-output {
+  display: block;
+}
+.xbox-panel {
+  flex-direction: column;
+  gap: 15px;
+}
+.xbox-panel .field {
+  margin-top: 15px;
+}
+.xbox-panel #xboxTriggerReverse[hidden] {
+  display: none;
+}
+.xbox-key-bindings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.xbox-key-bindings label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.xbox-key-bindings input {
+  width: 100%;
+  min-width: 0;
+  padding: 0 8px;
+  border-color: #3fc9ef;
+  text-align: center;
+  font-weight: 700;
+}
+.driver-link {
+  color: #3fc9ef;
+  font-weight: 650;
+  text-decoration: none;
+}
+.driver-link:hover {
+  text-decoration: underline;
+}

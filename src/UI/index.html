@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MultiTron2</title>
+  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="components/header.css">
+  <link rel="stylesheet" href="components/input-tabs.css">
+  <link rel="stylesheet" href="components/mouse-input.css">
+  <link rel="stylesheet" href="components/audio-input.css">
+  <link rel="stylesheet" href="components/loudness-input.css">
+  <link rel="stylesheet" href="components/combined-input.css">
+  <link rel="stylesheet" href="components/output-tabs.css">
+  <link rel="stylesheet" href="components/vjoy-output.css">
+  <link rel="stylesheet" href="components/keyboard-output.css">
+  <link rel="stylesheet" href="components/xbox-output.css">
+</head>
+<body>
+  <router-header></router-header>
+  <main class="layout">
+    <section class="panel input">
+      <router-input-tabs></router-input-tabs>
+      <router-mouse-input></router-mouse-input>
+      <router-audio-input></router-audio-input>
+      <router-loudness-input></router-loudness-input>
+      <router-combined-input></router-combined-input>
+    </section>
+    <aside class="panel output">
+      <router-output-tabs></router-output-tabs>
+      <div class="metric" id="outputMetric"><div class="output-reading"><span class="unscaled" id="outputUnscaled">UNSCALED <b>0</b>%</span><span class="number" id="outputNumber">—</span><span class="unit" id="outputUnit" style="display:none">%</span></div><div class="caption" id="outputCaption">Keyboard output</div></div>
+      <router-vjoy-output></router-vjoy-output>
+      <router-keyboard-output></router-keyboard-output>
+      <router-xbox-output></router-xbox-output>
+    </aside>
+  </main>
+  <script>window.RouterConfig=function(value){window.__routerConfig=value;};window.RouterState=function(value){window.__routerState=value;};window.RouterMappings=function(value){window.__routerMappings=value;};window.RouterMouseRotationMeasurement=function(value){var element=document.getElementById('mouseRotationLivePixels');if(element)element.textContent=value+' pixels';};</script>
+  <script defer src="components.js"></script>
+  <script defer src="app.js"></script>
+  <script defer src="restore-state.js"></script>
+  <script defer src="enhancements.js"></script>
+  <script defer src="select-fallback.js"></script>
+  <script defer src="combined.js"></script>
+  <script defer src="output-layout.js"></script>
+  <script defer src="enabled-state.js"></script>
+  <script>if (new URLSearchParams(location.search).has('mock')) document.write('<script defer src="mock.js"><\/script>');</script>
+</body>
+</html>

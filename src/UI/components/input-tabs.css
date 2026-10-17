@@ -1,0 +1,66 @@
+router-input-tabs {
+  display: block;
+}
+.tabs {
+  display: flex;
+  gap: 7px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #2c4152;
+}
+.tab {
+  position: relative;
+  cursor: pointer;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  padding: 23px 16px 11px;
+  color: #9eb1c2;
+  background: transparent;
+  font: inherit;
+  font-weight: 650;
+}
+.tab.active {
+  color: #fff;
+  border-bottom-color: #20c6ee;
+}
+.tab:not(.is-disabled):hover {
+  color: #fff;
+  background: #142b3b;
+}
+.tab.is-disabled {
+  color: #e9f1fa;
+  text-decoration: line-through;
+}
+.section-label {
+  padding: 0 12px 0 2px;
+  color: #7993a7;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.tab-output { position: absolute; top: 6px; left: 16px; right: 16px; height: 10px; display: flex; align-items: center; gap: 5px; color: #8fa7b9; font-size: 9px; font-weight: 700; }
+.tab-output:before { content: ""; width: 36px; height: 3px; border-radius: 2px; background: #2d4354; }
+.tab-output i { position: absolute; left: 0; width: 0; height: 3px; border-radius: 2px; transition: width .12s linear; }
+.tab-output b { font-size: 9px; }
+.tab-output.mouse i { background: #248cff; }
+.tab-output.audio i { background: #e54b4b; }
+.tab-output.loudness i { background: #bd74f5; }
+.tab-output.combined i { background: #42db75; }
+.input-settings-cog {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+  border: 1px dotted #315067;
+  border-radius: 5px;
+  padding: 0;
+  color: #9eb1c2;
+  background: #102536;
+}
+.input-settings-cog svg { width: 22px; height: 22px; fill: currentColor; }
+.input-settings-cog:hover,
+.input-settings-cog.active { border-color: #4d7897; color: #fff; background: #19364b; }
+.input-settings-page .switch input { accent-color: #59d975; }

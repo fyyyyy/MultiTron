@@ -1,0 +1,75 @@
+router-mouse-input {
+  display: block;
+}
+.mouse-source-settings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.mouse-source-panel {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid #26394a;
+  border-radius: 7px;
+  background: #0c2634;
+}
+.mouse-source-panel .switch { margin: 0; }
+.mouse-source-panel .field { min-width: 0; }
+.mouse-source-panel input[type="number"] { width: 100%; }
+.mouse-distance { gap: 7px; }
+.mouse-source-panel .mouse-distance input { flex: 1; width: auto; min-width: 0; }
+.mouse-source-panel .mouse-distance select { flex: 0 0 100px; width: 100px; }
+.compact-hint { margin: 5px 0 0; font-size: 11px; }
+.mouse-tuning { margin-top: 0; }
+.mouse-graphs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  margin-top: 15px;
+  overflow: hidden;
+  border: 1px solid #176e8c;
+  border-radius: 7px;
+  background: #176e8c;
+}
+.mouse-graph {
+  padding: 10px 12px 8px;
+  color: #9eddf0;
+  background: #0c2634;
+}
+.mouse-graph-header,
+.mouse-graph-values {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.mouse-graph-values {
+  width: 100%;
+  gap: 16px;
+}
+.mouse-graph-range {
+  color: #8fa7b9;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+#smoothing {
+  accent-color: #59d975;
+}
+
+#smoothingValue {
+  color: #59d975;
+}
+.mouse-graph-header strong {
+  color: #1f9fff;
+  font-size: 20px;
+}
+.mouse-graph canvas {
+  display: block;
+  width: 100%;
+  height: 90px;
+  margin-top: 3px;
+}

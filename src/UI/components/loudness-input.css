@@ -1,0 +1,26 @@
+router-loudness-input {
+  display: block;
+}
+.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+.compact-hint {
+  margin: 2px 0 0;
+  font-size: 12px;
+  line-height: 1.2;
+}
+.green-value,
+.smooth-colour {
+  color: #59d975;
+}
+.raw-colour {
+  color: #bd74f5;
+}
+.maximum-rpm {
+  margin-left: 10px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
