@@ -2,6 +2,9 @@
 
 Windows program to convert excercise bikes or treadmills ( MaraTron ) or other hardware into precision game controllers.
 
+<img width="1864" height="1382" alt="grafik" src="https://github.com/user-attachments/assets/a8675780-cd28-4a38-9ee0-8bcd47192c18" />
+
+
 Mutliple Inputs, Multiple Outputs
 
 Also reads RPM sensor input via 3.5mm audio jack soundcard
