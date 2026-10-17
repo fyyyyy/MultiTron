@@ -1,4 +1,4 @@
-# Mouse vJoy Router
+# MultiTron
 
 Windows program to convert excercise bikes or treadmills ( MaraTron ) or other hardware into precision game controllers.
 
