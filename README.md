@@ -3,6 +3,7 @@
 Open Source ReWASD alternative.
 
 Windows program to convert excercise bikes or treadmills ( MaraTron ) or other hardware into precision game controllers. Agentic coded, can't be bothered to read all code so use at your own risk.
+Download latest build: https://maratron2.sfo3.digitaloceanspaces.com/releases/MultiTron2-Setup-0.1.1.exe
 
 <img width="1864" height="1382" alt="grafik" src="https://github.com/user-attachments/assets/a8675780-cd28-4a38-9ee0-8bcd47192c18" />
 
