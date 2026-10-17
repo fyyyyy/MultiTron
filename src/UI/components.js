@@ -598,7 +598,7 @@
     render() {
       return b2`<header>
       <div class="brand">
-        <span class="logo"></span><span class="brand-copy"><span class="brand-name"><span>MultiTron2</span><span class="beta">0.1.1 beta</span></span><span class="sub">&nbsp;io</span></span>
+        <span class="logo"></span><span class="brand-copy"><span class="brand-name"><span>MultiTron2</span><span class="beta">1.0.0 beta</span></span><span class="sub">&nbsp;io</span></span>
       </div>
       <div class="settings-actions">
         <div><button type="button" onclick="RouterAction('settings-save','')">Save</button><button type="button" onclick="RouterAction('settings-load','')">Load</button></div>

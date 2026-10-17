@@ -9,3 +9,5 @@
 .DS_Store
 .env
 .env.*
+/scripts/upload-installer.ps1
+/scripts/upload-release-to-spaces.mjs

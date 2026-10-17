@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.21)
 
-project(MultiTron2 VERSION 0.1.1 LANGUAGES CXX)
+project(MultiTron2 VERSION 1.0.0 LANGUAGES CXX)
 
 include(FetchContent)
 FetchContent_Declare(vigemclient

@@ -1,5 +1,5 @@
 #define MyAppName "MultiTron2"
-#define MyAppVersion "0.1.1"
+#define MyAppVersion "1.0.0"
 #define MyAppPublisher "MultiTron2"
 #define MyAppExeName "MultiTron2.exe"
 
