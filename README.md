@@ -9,9 +9,16 @@ Windows program to convert excercise bikes or treadmills ( MaraTron ) or other h
 
 Mutliple Inputs, Multiple Outputs
 
-Also reads RPM sensor input via 3.5mm audio jack soundcard
+* Use a mouse as input, MaraTron style.
 
-Also reads USB loudness controllers as rotary sensors.
+* Also reads RPM sensor input via 3.5mm audio jack soundcard
+
+<img width="300" alt="grafik" src="https://github.com/user-attachments/assets/ced886f3-8d0a-4f14-8401-09c85196329e" />
+
+* Also reads USB loudness controllers as rotary sensors.
+
+<img width="300" alt="grafik" src="https://github.com/user-attachments/assets/7f1e7111-3326-49f5-9bbf-9cbe8d47ca85" />
+
 
 Outputs:
 
