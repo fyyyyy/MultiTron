@@ -129,19 +129,8 @@ void openLog() {
 #include "RouterDashboard.inl"
 #include "RouterNativeControls.inl"
 
-bool isHardcodedExpiryReached() {
-    SYSTEMTIME today{};
-    GetLocalTime(&today);
-    return today.wYear > 2026
-        || (today.wYear == 2026 && (today.wMonth > 10 || (today.wMonth == 10 && today.wDay >= 1)));
-}
-
 int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int showCommand) {
     openLog();
-    if (isHardcodedExpiryReached()) {
-        MessageBoxW(nullptr, L"This MultiTron2 build expired on 1 October 2026.", L"MultiTron2", MB_OK | MB_ICONERROR);
-        return 0;
-    }
     timeBeginPeriod(1);
     INITCOMMONCONTROLSEX commonControls{sizeof(commonControls), ICC_BAR_CLASSES};
     InitCommonControlsEx(&commonControls);
