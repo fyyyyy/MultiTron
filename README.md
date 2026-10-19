@@ -6,6 +6,18 @@ Windows program to convert excercise bikes or treadmills ( MaraTron ) or other h
 
 Download latest build: https://maratron2.sfo3.digitaloceanspaces.com/releases/MultiTron2-Setup-1.0.1.exe
 
+## Contents
+
+- [Technical overview](#technical-overview)
+- [Build from source](#build-from-source)
+  - [Third-party SDK files](#third-party-sdk-files)
+  - [Compile and run](#compile-and-run)
+  - [UI development](#ui-development)
+- [Runtime setup](#runtime-setup)
+  - [Mouse sensor recommendations](#mouse-sensor-recommendations)
+  - [Rotary encoder recommendations](#rotary-encoder-recommendations)
+- [Settings and source layout](#settings-and-source-layout)
+
 <img width="1864" height="1382" alt="grafik" src="https://github.com/user-attachments/assets/a8675780-cd28-4a38-9ee0-8bcd47192c18" />
 
 
@@ -27,6 +39,62 @@ Outputs:
 Keyboard
 Virtual Joystick
 Xbox Controller
+
+
+## Runtime setup
+
+- Install the [Interception driver](https://github.com/oblitum/Interception) for mouse suppression and USB volume dial capture. Run `install-interception.exe /install` from an Administrator Command Prompt, then restart Windows.
+- For vJoy output, install vJoy and configure Device 1 with X and Y axes. The application loads `vJoyInterface.dll` from its DLL search path or the standard vJoy x64 installation directories.
+- For Xbox output, install [ViGEmBus](https://github.com/nefarius/ViGEmBus/releases). The application creates a virtual Xbox 360 controller through the driver.
+- For audio cadence input, connect the sensor to an audio input. Capture currently uses the Windows default recording device (`WAVE_MAPPER`).
+
+Select the bike mouse, choose its motion axis and output mapping, then move the mouse. The dashboard displays input and output values.
+
+### Mouse sensor recommendations
+
+The mouse is an underrated motion sensor. Older, low-tracking-rate mice earned a poor reputation because they could max out at treadmill sprint speeds. A modern mouse, however, can beat other sensor types in this price range for precision, latency, and tracking speed. It is also bidirectional, so it distinguishes forward from reverse motion.
+
+To avoid maxing out at high speed, choose a mouse with a **high IPS** (inches per second) rating. Measure the tape movement speed during your fastest run, then multiply the speed in mph by **17.6** to get the minimum IPS rating you need.
+
+> Example: at 20 mph, `20 × 17.6 = 352`, so choose a mouse rated for at least 352 IPS.
+
+The [$15 Rapoo VT0 Pro](https://www.rapoo-eu.com/product/vt0pro/) has 650 IPS and tracks fast sprints as well as very slow movement with sub-millimetre precision. That rating corresponds to roughly 37 mph (60 km/h), well beyond most treadmill speeds. It also has two scroll wheels that can be repurposed as additional inputs if disassembled.
+
+For exceptionally high speeds, the [Logitech PRO X SUPERLIGHT 2](https://www.logitechg.com/en-gb/shop/p/pro-x-superlight-2-cyan.910-007695) is rated for 888 IPS—about 50 mph (80 km/h). It is likely overkill, but should not max out for any normal use.
+
+For more on IPS, see [What does IPS mean in mouse specs?](https://www.rawmshop.com/de/blogs/all-about-mice/what-does-ips-mean-in-mouse-specs). If the mouse hardware or software is configurable, set **IPS to its highest value** and **DPI to its lowest value**.
+
+### Rotary encoder recommendations
+
+USB volume or loudness controls can be purchased for around $7 [online](https://www.aliexpress.com/w/wholesale-usb-volume-control.html). They commonly use 20-step, bidirectional rotary encoders, so they support both forward and reverse motion. Removing the knob exposes a potentiometer-style metal shaft that can be bolted easily to other gears or wheels.
+
+> A modern mouse can still [beat any other sensor](#mouse-sensor-recommendations) for precision, latency, and tracking speed.
+
+MultiTron can suppress the normal system-volume changes from these controls and map their turns to keyboard, virtual joystick, or Xbox controller outputs.
+
+The router uses the Interception input-filter driver. It forwards every mouse except the selected bike mouse unchanged; strokes from the selected mouse are consumed and mapped to vJoy, so they do not move the Windows cursor or affect the game as a normal mouse.
+
+When the connected `LC_KEY` USB loudness controller (`VID_1189&PID_8890`) is present, the router also claims its keyboard interface. Its Volume Up and Volume Down turns are consumed before Windows can change system loudness and are fed into the same motion/smoothing path as the selected bike mouse. The controller works with either configured mouse source axis.
+
+This is a system-wide input filter. If no mice appear in the dropdown after installation, reboot Windows, then reopen the router.
+
+## Settings and source layout
+
+Settings are automatically stored in `%LOCALAPPDATA%\MultiTron2\autosave.yaml`; session distance and timing records are appended to `sessions.yaml` in the same directory. The UI also supports saving and loading settings files manually.
+
+| Path | Purpose |
+| --- | --- |
+| `src/main.cpp` | Startup, native window integration, and UI command dispatch |
+| `src/RouterApp.inl` | Shared application state |
+| `src/RouterInput.inl` | Input processing, smoothing, and output routing |
+| `src/RouterDashboard.inl` | Ultralight dashboard and JavaScript/native bridge |
+| `src/RouterNativeControls.inl` | Native controls and event handling |
+| `src/RouterSettings.inl` | Settings and session persistence |
+| `src/InterceptionInput.*`, `src/AudioCadenceInput.*` | Input backends |
+| `src/VJoyOutput.*`, `src/XboxOutput.*` | Virtual controller backends |
+| `src/UI/` | Dashboard assets and Lit components |
+| `installer/` | Windows icon resources and Inno Setup definition |
+
 
 
 ## Technical overview
@@ -99,57 +167,3 @@ npm run dev
 Vite serves the UI at `http://127.0.0.1:4173` and loads the TypeScript components directly. Browser preview does not provide the native Windows driver/controller backend.
 
 For development inside the native application, `build-and-run.bat` sets `MOUSE_VJOY_ROUTER_UI_PATH` to this checkout's `src/UI` directory. The dashboard copies these assets into a `hot-ui` directory beside the executable and watches stylesheets for reloads. TypeScript changes still require rebuilding the component bundle.
-
-## Runtime setup
-
-- Install the [Interception driver](https://github.com/oblitum/Interception) for mouse suppression and USB volume dial capture. Run `install-interception.exe /install` from an Administrator Command Prompt, then restart Windows.
-- For vJoy output, install vJoy and configure Device 1 with X and Y axes. The application loads `vJoyInterface.dll` from its DLL search path or the standard vJoy x64 installation directories.
-- For Xbox output, install [ViGEmBus](https://github.com/nefarius/ViGEmBus/releases). The application creates a virtual Xbox 360 controller through the driver.
-- For audio cadence input, connect the sensor to an audio input. Capture currently uses the Windows default recording device (`WAVE_MAPPER`).
-
-Select the bike mouse, choose its motion axis and output mapping, then move the mouse. The dashboard displays input and output values.
-
-### Mouse sensor recommendations
-
-The mouse is an underrated motion sensor. Older, low-tracking-rate mice earned a poor reputation because they could max out at treadmill sprint speeds. A modern mouse, however, can beat other sensor types in this price range for precision, latency, and tracking speed. It is also bidirectional, so it distinguishes forward from reverse motion.
-
-To avoid maxing out at high speed, choose a mouse with a **high IPS** (inches per second) rating. Measure the tape movement speed during your fastest run, then multiply the speed in mph by **17.6** to get the minimum IPS rating you need.
-
-> Example: at 20 mph, `20 × 17.6 = 352`, so choose a mouse rated for at least 352 IPS.
-
-The [$15 Rapoo VT0 Pro](https://www.rapoo-eu.com/product/vt0pro/) has 650 IPS and tracks fast sprints as well as very slow movement with sub-millimetre precision. That rating corresponds to roughly 37 mph (60 km/h), well beyond most treadmill speeds. It also has two scroll wheels that can be repurposed as additional inputs if disassembled.
-
-For exceptionally high speeds, the [Logitech PRO X SUPERLIGHT 2](https://www.logitechg.com/en-gb/shop/p/pro-x-superlight-2-cyan.910-007695) is rated for 888 IPS—about 50 mph (80 km/h). It is likely overkill, but should not max out for any normal use.
-
-For more on IPS, see [What does IPS mean in mouse specs?](https://www.rawmshop.com/de/blogs/all-about-mice/what-does-ips-mean-in-mouse-specs). If the mouse hardware or software is configurable, set **IPS to its highest value** and **DPI to its lowest value**.
-
-### Rotary encoder recommendations
-
-USB volume or loudness controls can be purchased for around $7 [online](https://www.aliexpress.com/w/wholesale-usb-volume-control.html). They commonly use 20-step, bidirectional rotary encoders, so they support both forward and reverse motion. Removing the knob exposes a potentiometer-style metal shaft that can be bolted easily to other gears or wheels.
-
-> A modern mouse can still [beat any other sensor](#mouse-sensor-recommendations) for precision, latency, and tracking speed.
-
-MultiTron can suppress the normal system-volume changes from these controls and map their turns to keyboard, virtual joystick, or Xbox controller outputs.
-
-The router uses the Interception input-filter driver. It forwards every mouse except the selected bike mouse unchanged; strokes from the selected mouse are consumed and mapped to vJoy, so they do not move the Windows cursor or affect the game as a normal mouse.
-
-When the connected `LC_KEY` USB loudness controller (`VID_1189&PID_8890`) is present, the router also claims its keyboard interface. Its Volume Up and Volume Down turns are consumed before Windows can change system loudness and are fed into the same motion/smoothing path as the selected bike mouse. The controller works with either configured mouse source axis.
-
-This is a system-wide input filter. If no mice appear in the dropdown after installation, reboot Windows, then reopen the router.
-
-## Settings and source layout
-
-Settings are automatically stored in `%LOCALAPPDATA%\MultiTron2\autosave.yaml`; session distance and timing records are appended to `sessions.yaml` in the same directory. The UI also supports saving and loading settings files manually.
-
-| Path | Purpose |
-| --- | --- |
-| `src/main.cpp` | Startup, native window integration, and UI command dispatch |
-| `src/RouterApp.inl` | Shared application state |
-| `src/RouterInput.inl` | Input processing, smoothing, and output routing |
-| `src/RouterDashboard.inl` | Ultralight dashboard and JavaScript/native bridge |
-| `src/RouterNativeControls.inl` | Native controls and event handling |
-| `src/RouterSettings.inl` | Settings and session persistence |
-| `src/InterceptionInput.*`, `src/AudioCadenceInput.*` | Input backends |
-| `src/VJoyOutput.*`, `src/XboxOutput.*` | Virtual controller backends |
-| `src/UI/` | Dashboard assets and Lit components |
-| `installer/` | Windows icon resources and Inno Setup definition |
