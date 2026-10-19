@@ -11,7 +11,7 @@ Download latest build: https://maratron2.sfo3.digitaloceanspaces.com/releases/Mu
 
 Mutliple Inputs, Multiple Outputs
 
-* Use a mouse as input, MaraTron style.
+* [Use a mouse as input, MaraTron style.](#mouse-sensor-recommendations)
 
 * Also reads RPM sensor input via 3.5mm audio jack soundcard
 
@@ -108,6 +108,20 @@ For development inside the native application, `build-and-run.bat` sets `MOUSE_V
 - For audio cadence input, connect the sensor to an audio input. Capture currently uses the Windows default recording device (`WAVE_MAPPER`).
 
 Select the bike mouse, choose its motion axis and output mapping, then move the mouse. The dashboard displays input and output values.
+
+### Mouse sensor recommendations
+
+The mouse is an underrated motion sensor. Older, low-tracking-rate mice earned a poor reputation because they could max out at treadmill sprint speeds. A modern mouse, however, can beat other sensor types in this price range for precision, latency, and tracking speed. It is also bidirectional, so it distinguishes forward from reverse motion.
+
+To avoid maxing out at high speed, choose a mouse with a **high IPS** (inches per second) rating. Measure the tape movement speed during your fastest run, then multiply the speed in mph by **17.6** to get the minimum IPS rating you need.
+
+> Example: at 20 mph, `20 × 17.6 = 352`, so choose a mouse rated for at least 352 IPS.
+
+The [$15 Rapoo VT0 Pro](https://www.rapoo-eu.com/product/vt0pro/) has 650 IPS and tracks fast sprints as well as very slow movement with sub-millimetre precision. That rating corresponds to roughly 37 mph (60 km/h), well beyond most treadmill speeds. It also has two scroll wheels that can be repurposed as additional inputs if disassembled.
+
+For exceptionally high speeds, the [Logitech PRO X SUPERLIGHT 2](https://www.logitechg.com/en-gb/shop/p/pro-x-superlight-2-cyan.910-007695) is rated for 888 IPS—about 50 mph (80 km/h). It is likely overkill, but should not max out for any normal use.
+
+For more on IPS, see [What does IPS mean in mouse specs?](https://www.rawmshop.com/de/blogs/all-about-mice/what-does-ips-mean-in-mouse-specs). If the mouse hardware or software is configurable, set **IPS to its highest value** and **DPI to its lowest value**.
 
 The router uses the Interception input-filter driver. It forwards every mouse except the selected bike mouse unchanged; strokes from the selected mouse are consumed and mapped to vJoy, so they do not move the Windows cursor or affect the game as a normal mouse.
 
