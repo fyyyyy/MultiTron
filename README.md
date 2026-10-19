@@ -17,7 +17,7 @@ Mutliple Inputs, Multiple Outputs
 
 <img width="300" alt="grafik" src="https://github.com/user-attachments/assets/ced886f3-8d0a-4f14-8401-09c85196329e" />
 
-* Also reads USB loudness controllers as rotary sensors.
+* [Also reads USB loudness controllers as rotary sensors.](#rotary-encoder-recommendations)
 
 <img width="300" alt="grafik" src="https://github.com/user-attachments/assets/7f1e7111-3326-49f5-9bbf-9cbe8d47ca85" />
 
@@ -122,6 +122,14 @@ The [$15 Rapoo VT0 Pro](https://www.rapoo-eu.com/product/vt0pro/) has 650 IPS an
 For exceptionally high speeds, the [Logitech PRO X SUPERLIGHT 2](https://www.logitechg.com/en-gb/shop/p/pro-x-superlight-2-cyan.910-007695) is rated for 888 IPS—about 50 mph (80 km/h). It is likely overkill, but should not max out for any normal use.
 
 For more on IPS, see [What does IPS mean in mouse specs?](https://www.rawmshop.com/de/blogs/all-about-mice/what-does-ips-mean-in-mouse-specs). If the mouse hardware or software is configurable, set **IPS to its highest value** and **DPI to its lowest value**.
+
+### Rotary encoder recommendations
+
+USB volume or loudness controls can be purchased for around $7 [online](https://www.aliexpress.com/w/wholesale-usb-volume-control.html). They commonly use 20-step, bidirectional rotary encoders, so they support both forward and reverse motion. Removing the knob exposes a potentiometer-style metal shaft that can be bolted easily to other gears or wheels.
+
+> A modern mouse can still [beat any other sensor](#mouse-sensor-recommendations) for precision, latency, and tracking speed.
+
+MultiTron can suppress the normal system-volume changes from these controls and map their turns to keyboard, virtual joystick, or Xbox controller outputs.
 
 The router uses the Interception input-filter driver. It forwards every mouse except the selected bike mouse unchanged; strokes from the selected mouse are consumed and mapped to vJoy, so they do not move the Windows cursor or affect the game as a normal mouse.
 
