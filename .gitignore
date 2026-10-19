@@ -11,3 +11,4 @@
 .env.*
 /scripts/upload-installer.ps1
 /scripts/upload-release-to-spaces.mjs
+build-upload-installer.bat
