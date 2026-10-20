@@ -72,9 +72,11 @@ USB volume or loudness controls can be purchased for around $7 [online](https://
 
 MultiTron can suppress the normal system-volume changes from these controls and map their turns to keyboard, virtual joystick, or Xbox controller outputs.
 
-The router uses the Interception input-filter driver. It forwards every mouse except the selected bike mouse unchanged; strokes from the selected mouse are consumed and mapped to vJoy, so they do not move the Windows cursor or affect the game as a normal mouse.
+## Interception driver
 
-When the connected `LC_KEY` USB loudness controller (`VID_1189&PID_8890`) is present, the router also claims its keyboard interface. Its Volume Up and Volume Down turns are consumed before Windows can change system loudness and are fed into the same motion/smoothing path as the selected bike mouse. The controller works with either configured mouse source axis.
+The app uses the Interception input-filter driver. It forwards every mouse except the selected bike mouse unchanged; strokes from the selected mouse are consumed and mapped to vJoy, so they do not move the Windows cursor or affect the game as a normal mouse.
+
+When the connected `LC_KEY` USB loudness controller (`VID_1189&PID_8890`) is present, the app also claims its keyboard interface. Its Volume Up and Volume Down turns are consumed before Windows can change system loudness and are fed into the same motion/smoothing path as the selected bike mouse. The controller works with either configured mouse source axis.
 
 This is a system-wide input filter. If no mice appear in the dropdown after installation, reboot Windows, then reopen the router.
 
