@@ -227,6 +227,8 @@ LRESULT CALLBACK windowProc(HWND window, UINT message, WPARAM wParam, LPARAM lPa
                     app->xbox.setAxis(0, xPosition);
                 }
             }
+            sendSteamVR(*app);
+            sendOpenXR(*app);
             const long clampedKeyboardPercent = keyboardPercentForMouseDelta(*app, accumulatedDelta);
             app->lastKeyboardPercent = clampedKeyboardPercent;
             const bool mappingsEnabled = app->keyboardMappingsEnabled.load();

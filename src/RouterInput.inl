@@ -479,11 +479,16 @@ LRESULT CALLBACK statsOverlayProc(HWND window, UINT message, WPARAM wParam, LPAR
         wchar_t text[512]{};
         GetWindowTextW(window, text, static_cast<int>(std::size(text)));
         std::wistringstream lines(text);
-        std::wstring outputLine, keyLine, vjoyLine, xboxLine;
+        std::wstring outputLine, keyLine, vjoyLine, xboxLine, steamvrLine, openxrLine;
         std::getline(lines, outputLine);
         std::getline(lines, keyLine);
-        std::getline(lines, vjoyLine);
-        std::getline(lines, xboxLine);
+        // Optional rows are matched by prefix: any subset of outputs may be active.
+        for (std::wstring extra; std::getline(lines, extra);) {
+            if (extra.rfind(L"vJoy", 0) == 0) vjoyLine = extra;
+            else if (extra.rfind(L"Xbox", 0) == 0) xboxLine = extra;
+            else if (extra.rfind(L"VR", 0) == 0) steamvrLine = extra;
+            else if (extra.rfind(L"XR", 0) == 0) openxrLine = extra;
+        }
 
         const auto font = [](int height, int weight) {
             return CreateFontW(height, 0, 0, 0, weight, FALSE, FALSE, FALSE, DEFAULT_CHARSET,
@@ -533,6 +538,8 @@ LRESULT CALLBACK statsOverlayProc(HWND window, UINT message, WPARAM wParam, LPAR
         };
         drawAxis(vjoyLine, L"vJoy", RGB(104, 207, 255));
         drawAxis(xboxLine, L"Xbox", RGB(137, 219, 86));
+        drawAxis(steamvrLine, L"VR", RGB(255, 190, 90));
+        drawAxis(openxrLine, L"XR", RGB(255, 150, 200));
 
         DeleteObject(labelFont);
         DeleteObject(outputFont);
@@ -565,7 +572,7 @@ void positionStatsOverlay(App& app) {
     if (!app.statsOverlayWindow) return;
     RECT workArea{};
     SystemParametersInfoW(SPI_GETWORKAREA, 0, &workArea, 0);
-    constexpr int width = 320, height = 220, margin = 20;
+    constexpr int width = 320, height = 280, margin = 20;
     const int position = std::clamp(app.statsOverlayPosition.load(), 0, 3);
     const int x = (position == 1 || position == 3) ? workArea.right - width - margin : workArea.left + margin;
     const int y = (position == 2 || position == 3) ? workArea.bottom - height - margin : workArea.top + margin;
@@ -585,6 +592,34 @@ void setStatsOverlayVisible(App& app, bool visible) {
         ShowWindow(app.statsOverlayWindow, SW_HIDE);
         writeLog("stats overlay hidden");
     }
+}
+
+// Router output (-1..1) scaled by a per-output strength, mirroring the Xbox path.
+double scaledOutputFraction(const App& app, long strength) {
+    const double centre = static_cast<double>(VJoyOutput::centrePosition());
+    const double half = static_cast<double>(VJoyOutput::maximum() - VJoyOutput::centrePosition());
+    return std::clamp((app.axisPosition.load() - centre) / half * strength / 100.0, -1.0, 1.0);
+}
+double steamvrOutputFraction(const App& app) { return scaledOutputFraction(app, app.steamvrStrength.load()); }
+double openxrOutputFraction(const App& app) { return scaledOutputFraction(app, app.openxrStrength.load()); }
+
+// Called every output tick: the write doubles as the heartbeat consumers use
+// to detect a stopped or crashed app.
+void sendSteamVR(App& app) {
+    if (!app.steamvrEnabled.load()) return;
+    const float fraction = static_cast<float>(steamvrOutputFraction(app));
+    switch (app.steamvrAxis.load()) {
+        case 0: app.steamvr.updateController(fraction, 0.f); break;
+        case 1: app.steamvr.updateController(0.f, fraction); break;
+        default: app.steamvr.updateController(0.f, 0.f, std::max(0.f, fraction)); break;
+    }
+}
+
+void sendOpenXR(App& app) {
+    if (!app.openxrEnabled.load()) return;
+    const float fraction = static_cast<float>(openxrOutputFraction(app));
+    if (app.openxrAxis.load() == 0) app.steamvr.updateStick(fraction, 0.f);
+    else app.steamvr.updateStick(0.f, fraction);
 }
 
 void updateStatsOverlay(App& app) {
@@ -615,6 +650,12 @@ void updateStatsOverlay(App& app) {
         const long xboxAxis = VJoyOutput::centrePosition() + static_cast<long>(std::lround(
             (app.axisPosition.load() - VJoyOutput::centrePosition()) * app.xboxStrength.load() / 100.0));
         text += L"\nXbox  " + std::to_wstring(percent(xboxAxis)) + L"%";
+    }
+    if (app.steamvrEnabled.load() && app.steamvr.isReady()) {
+        text += L"\nVR  " + std::to_wstring(static_cast<long>(std::lround(steamvrOutputFraction(app) * 100.0))) + L"%";
+    }
+    if (app.openxrEnabled.load() && app.steamvr.isReady()) {
+        text += L"\nXR  " + std::to_wstring(static_cast<long>(std::lround(openxrOutputFraction(app) * 100.0))) + L"%";
     }
     if (firstActiveMapping) {
         SetPropW(app.statsOverlayWindow, L"MultiTron2KeyColour", reinterpret_cast<HANDLE>(static_cast<ULONG_PTR>(keyColourFor(app, firstActiveMapping->key)) + 1));

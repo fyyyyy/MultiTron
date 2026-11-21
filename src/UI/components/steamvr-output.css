@@ -1,0 +1,13 @@
+router-steamvr-output {
+  display: block;
+}
+.steamvr-panel {
+  flex-direction: column;
+  gap: 15px;
+}
+.steamvr-panel .field {
+  margin-top: 15px;
+}
+.steamvr-panel code {
+  color: #3fc9ef;
+}

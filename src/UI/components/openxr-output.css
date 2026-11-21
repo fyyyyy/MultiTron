@@ -1,0 +1,13 @@
+router-openxr-output {
+  display: block;
+}
+.openxr-panel {
+  flex-direction: column;
+  gap: 15px;
+}
+.openxr-panel .field {
+  margin-top: 15px;
+}
+.openxr-panel code {
+  color: #3fc9ef;
+}

@@ -32,11 +32,17 @@
     var xbox = !checkbox('xboxEnabled');
     setDisabled('#xboxPanel .field, #xboxPanel .hint, #xboxPanel .driver-link, #xboxPanel .metric', xbox);
 
+    var steamvr = !checkbox('steamvrEnabled');
+    setDisabled('#steamvrPanel .field, #steamvrPanel .hint, #steamvrPanel .metric', steamvr);
+
+    var openxr = !checkbox('openxrEnabled');
+    setDisabled('#openxrPanel .field, #openxrPanel .hint, #openxrPanel .metric', openxr);
+
     var keyboard = !checkbox('keyboardEnabled');
     setDisabled('#keyboardPanel canvas, #keyboardPanel .keymap', keyboard);
   }
   document.addEventListener('change', function (event) {
-    if (event.target.matches('#mouseEnabled,#audioEnabled,#loudnessEnabled,#vjoyEnabled,#xboxEnabled,#keyboardEnabled')) update();
+    if (event.target.matches('#mouseEnabled,#audioEnabled,#loudnessEnabled,#vjoyEnabled,#xboxEnabled,#steamvrEnabled,#openxrEnabled,#keyboardEnabled')) update();
   });
   document.querySelectorAll('.outtab').forEach(function (tab) {
     tab.addEventListener('click', update);

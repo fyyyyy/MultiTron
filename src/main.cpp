@@ -2,6 +2,7 @@
 #include "VJoyOutput.h"
 #include "AudioCadenceInput.h"
 #include "XboxOutput.h"
+#include "SteamVROutput.h"
 
 #include <AppCore/App.h>
 #include <AppCore/JSHelpers.h>
@@ -70,6 +71,8 @@ constexpr long kDefaultMovementStrength = 1;
 constexpr long kMinimumMovementStrength = 1;
 constexpr long kMaximumVJoyStrength = 200;
 constexpr long kMaximumXboxStrength = 200;
+constexpr long kMaximumSteamVRStrength = 200;
+constexpr long kMaximumOpenXRStrength = 200;
 constexpr wchar_t kFunctionKeyMarker = 0xE000;
 constexpr wchar_t kLastFunctionKeyMarker = kFunctionKeyMarker + 11;
 // High-DPI mice can report large raw deltas even at a slow belt speed. Keep
@@ -163,7 +166,7 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int showCommand) {
                                    CW_USEDEFAULT, CW_USEDEFAULT, 900, 560, nullptr, nullptr, instance, &app);
     if (!app.window) return 1;
     app.statsOverlayWindow = CreateWindowExW(WS_EX_TOPMOST | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE | WS_EX_LAYERED,
-        kStatsOverlayClassName, L"", WS_POPUP, 0, 0, 320, 220, nullptr, nullptr, instance, nullptr);
+        kStatsOverlayClassName, L"", WS_POPUP, 0, 0, 320, 280, nullptr, nullptr, instance, nullptr);
     if (app.statsOverlayEnabled.load()) setStatsOverlayVisible(app, true);
     makeLabel(instance, app.window, L"Bike mouse (this one is blocked from Windows)", 22, 22, 300);
     app.mouseCombo = makeCombo(instance, app.window, kIdMouseCombo, 22, 46, 630);
@@ -256,6 +259,7 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int showCommand) {
         if (!app.xbox.initialize()) writeLog("Xbox output unavailable");
         saveSettings(app);
     }
+    if ((app.steamvrEnabled.load() || app.openxrEnabled.load()) && !app.steamvr.start()) writeLog("VR shared memory unavailable");
     if (!app.interception.start([&app](int x, int y) { onBikeMovement(app, x, y); },
                                 [&app](unsigned short code, unsigned short state) { onLoudnessControllerKey(app, code, state); },
                                 [&app](int deviceId, const InterceptionMouseStroke& stroke) { logRawMousePacket(app, deviceId, stroke); })) {
@@ -366,6 +370,11 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int showCommand) {
                 app.lastXboxInitializeTick = GetTickCount64();
                 if (!app.xbox.initialize()) writeLog("Xbox output unavailable");
             } else app.xbox.shutdown();
+            if (app.steamvrEnabled.load() || app.openxrEnabled.load()) {
+                if (!app.steamvr.start()) writeLog("VR shared memory unavailable");
+            }
+            if (!app.steamvrEnabled.load()) app.steamvr.clearController();
+            if (!app.openxrEnabled.load()) app.steamvr.clearStick();
             setStatsOverlayVisible(app, app.statsOverlayEnabled.load());
             ++app.mappingRevision;
             dashboard.publishConfiguration();
@@ -533,6 +542,36 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int showCommand) {
         } else if (command == "xbox-x-right-key" && !value.empty()) {
             app.xboxXRightKey = std::towupper(static_cast<unsigned char>(value.front()));
             saveSettings(app);
+        } else if (command == "steamvr") {
+            const bool enable = numeric != 0;
+            app.steamvrEnabled = enable;
+            if (enable) {
+                if (!app.steamvr.start()) writeLog("VR shared memory unavailable");
+            } else {
+                app.steamvr.clearController();
+            }
+            saveSettings(app);
+        } else if (command == "openxr") {
+            const bool enable = numeric != 0;
+            app.openxrEnabled = enable;
+            if (enable) {
+                if (!app.steamvr.start()) writeLog("VR shared memory unavailable");
+            } else {
+                app.steamvr.clearStick();
+            }
+            saveSettings(app);
+        } else if (command == "openxr-strength") {
+            app.openxrStrength = std::clamp(static_cast<long>(numeric), kMinimumMovementStrength, kMaximumOpenXRStrength);
+            saveSettings(app);
+        } else if (command == "openxr-axis") {
+            app.openxrAxis = std::clamp(numeric, 0, 1);
+            saveSettings(app);
+        } else if (command == "steamvr-strength") {
+            app.steamvrStrength = std::clamp(static_cast<long>(numeric), kMinimumMovementStrength, kMaximumSteamVRStrength);
+            saveSettings(app);
+        } else if (command == "steamvr-axis") {
+            app.steamvrAxis = std::clamp(numeric, 0, 2);
+            saveSettings(app);
         } else if (command == "mapping") {
             std::stringstream values(value);
             std::string part;
@@ -611,6 +650,7 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int showCommand) {
     removeLoudnessHook();
     app.interception.stop();
     if (!appendSessionMetrics(app)) writeLog("could not append session metrics");
+    app.steamvr.stop();
     app.xbox.shutdown();
     app.vjoy.shutdown();
     timeEndPeriod(1);

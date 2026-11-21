@@ -27,6 +27,8 @@ add_executable(MultiTron2 WIN32
     src/AudioCadenceInput.h
     src/XboxOutput.cpp
     src/XboxOutput.h
+    src/SteamVROutput.cpp
+    src/SteamVROutput.h
     installer/MultiTron2.rc
 )
 
@@ -36,7 +38,8 @@ if (NOT EXISTS "${ULTRALIGHT_SDK_ROOT}/include/AppCore/App.h")
     message(FATAL_ERROR "Ultralight SDK not found. Extract it to ${ULTRALIGHT_SDK_ROOT}.")
 endif()
 
-target_include_directories(MultiTron2 PRIVATE "${ULTRALIGHT_SDK_ROOT}/include" "${vigemclient_SOURCE_DIR}/include")
+target_include_directories(MultiTron2 PRIVATE "${ULTRALIGHT_SDK_ROOT}/include" "${vigemclient_SOURCE_DIR}/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/shared")
 target_link_directories(MultiTron2 PRIVATE "${ULTRALIGHT_SDK_ROOT}/lib")
 target_link_libraries(MultiTron2 PRIVATE user32 comctl32 comdlg32 shell32 winmm setupapi ViGEmClient UltralightCore AppCore Ultralight WebCore)
 
@@ -52,3 +55,11 @@ add_custom_command(TARGET MultiTron2 POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${ULTRALIGHT_SDK_ROOT}/resources" "$<TARGET_FILE_DIR:MultiTron2>/resources"
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/src/UI" "$<TARGET_FILE_DIR:MultiTron2>/assets"
 )
+
+# SteamVR driver (driver_multitron.dll). Output: <config>/steamvr-driver/multitron
+add_subdirectory(driver)
+add_dependencies(MultiTron2 driver_multitron)
+
+# OpenXR API layer (adds MultiTron output to the left thumbstick). Output: <config>/openxr-layer
+add_subdirectory(openxr-layer)
+add_dependencies(MultiTron2 XR_APILAYER_MULTITRON_stick)

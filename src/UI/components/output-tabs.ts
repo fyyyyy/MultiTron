@@ -28,7 +28,19 @@ export class OutputTabs extends RouterElement {
         data-output="xbox"
         @click=${() => this.select("xbox")}
       >
-        Xbox
+        Xbox</button
+      ><button
+        class="outtab"
+        data-output="steamvr"
+        @click=${() => this.select("steamvr")}
+      >
+        SteamVR</button
+      ><button
+        class="outtab"
+        data-output="openxr"
+        @click=${() => this.select("openxr")}
+      >
+        OpenXR
       </button>
     </div>`;
   }

@@ -22,7 +22,7 @@
   window.RouterConfig({
     source: 0, target: 0, vjoyStrength: 62, xboxStrength: 62, smoothing: 45, inputUpdateInterval: 15, reverse: false,
     keyboard: true, audio: true, beep: false, threshold: 180, radius: 1000,
-    unit: 0, rpm: 110, xbox: false, xboxAxis: 1, loudnessClicks: 10,
+    unit: 0, rpm: 110, xbox: false, xboxAxis: 1, steamvr: false, steamvrAxis: 1, steamvrStrength: 62, openxr: false, openxrAxis: 1, openxrStrength: 62, loudnessClicks: 10,
     loudnessSmoothing: 55, loudnessRadius: 1000, loudness: false, loudnessReverse: false,
     mouseMixMinimum: 0, mouseMixMaximum: 100, mouseMixPriority: 1,
     audioMixMinimum: 0, audioMixMaximum: 100, audioMixPriority: 1,
@@ -52,7 +52,7 @@
       audioPulseSequence: state.pulse, speedKmh: rpm * 2.105 * 60 / 1000,
       averageKmh: state.averageKmh, distanceKm: state.distanceKm,
       distanceMiles: state.distanceKm / 1.609344, xbox: false,
-      xboxStatus: 'Disabled'
+      xboxStatus: 'Disabled', steamvrStatus: 'Disabled', openxrStatus: 'Disabled'
     });
   }, 125);
 }());
