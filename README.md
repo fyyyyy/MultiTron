@@ -1,3 +1,9 @@
+Note i have not thoroughly tested this as i have only just setup my own VR treadmill.
+
+Slopped out SteamVR and OpenXR integration with Claude, The SteamVR tab shows Multitron as it's own input Rather Than game pad so users can publish Multitron controller configs separately from game-pad config's. 
+
+With the OpenXR tab rather connecting as a separate controller it adds it's input to that of the left joystick requiring no setup in OpenXR games.
+
 # MultiTron
 
 Open Source ReWASD alternative.
