@@ -72,6 +72,27 @@ USB volume or loudness controls can be purchased for around $7 [online](https://
 
 MultiTron can suppress the normal system-volume changes from these controls and map their turns to keyboard, virtual joystick, or Xbox controller outputs.
 
+## SteamVR output
+
+MultiTron can also appear in SteamVR as a virtual controller (joystick X/Y or trigger), so bike or treadmill speed can drive locomotion bindings in VR games. The `driver/` folder builds `driver_multitron.dll`, a small SteamVR driver that reads the router output from shared memory (`shared/MultiTronIpc.h`); all input processing stays in `MultiTron2.exe`.
+
+1. Build as usual. CMake also produces `<config>/steamvr-driver/multitron` beside `MultiTron2.exe` (the installer packages it too). OpenVR headers are fetched with `FetchContent`; pin `GIT_TAG` in `driver/CMakeLists.txt` to a current OpenVR release.
+2. Register the folder once: `vrpathreg.exe adddriver "<path>\steamvr-driver\multitron"` (`vrpathreg.exe` is in SteamVR's `bin\win64` folder).
+3. Start SteamVR, open the **SteamVR** output tab in MultiTron, enable it and pick the axis. The status line shows when the driver is connected.
+
+If MultiTron stops sending for 500 ms the driver zeroes all inputs. SteamVR haptic events are stored in shared memory (`SteamVROutput::pollHaptic`) but are not forwarded to any hardware yet.
+
+### OpenXR layer: left thumbstick of a real controller (Quest 3, Virtual Desktop, OpenComposite)
+
+To make MultiTron act as the *left thumbstick of your real VR controller* (for example Skyrim VR through OpenComposite on Virtual Desktop's OpenXR runtime), use the OpenXR API layer in `openxr-layer/`. It adds MultiTron's value to whichever actions the game bound to `/user/hand/left/input/thumbstick`; the real stick keeps working and the two are summed.
+
+1. Build as usual. CMake produces `<config>/openxr-layer` beside `MultiTron2.exe` (DLL, manifest and scripts). OpenXR headers are fetched with `FetchContent`; pin `GIT_TAG` in `openxr-layer/CMakeLists.txt` to a current OpenXR SDK release.
+2. Register it for your user (no admin): run `install-openxr-layer.ps1` from that folder. Run `uninstall-openxr-layer.ps1` to remove it.
+3. In MultiTron, open the **OpenXR** output tab, enable it and pick the axis (Left stick Y is forward). Start the game (restart it if it was open). The tab has its own enable, strength and axis settings, separate from the SteamVR tab.
+4. Diagnostics: `%LOCALAPPDATA%\MultiTron2\openxr-layer.log` records when the layer loads, which actions were bound to the left thumbstick, and the first injection into each.
+
+It works for OpenXR applications and for OpenVR games running through OpenComposite. It does not affect games that talk to SteamVR's OpenVR directly: a SteamVR driver cannot write into another device's inputs, so the **SteamVR** tab can only add a separate virtual controller, not add to your real stick.
+
 ## Interception driver
 
 The app uses the Interception input-filter driver. It forwards every mouse except the selected bike mouse unchanged; strokes from the selected mouse are consumed and mapped to vJoy, so they do not move the Windows cursor or affect the game as a normal mouse.
@@ -93,7 +114,8 @@ Settings are automatically stored in `%LOCALAPPDATA%\MultiTron2\autosave.yaml`; 
 | `src/RouterNativeControls.inl` | Native controls and event handling |
 | `src/RouterSettings.inl` | Settings and session persistence |
 | `src/InterceptionInput.*`, `src/AudioCadenceInput.*` | Input backends |
-| `src/VJoyOutput.*`, `src/XboxOutput.*` | Virtual controller backends |
+| `src/VJoyOutput.*`, `src/XboxOutput.*`, `src/SteamVROutput.*` | Virtual controller backends |
+| `driver/`, `shared/MultiTronIpc.h` | SteamVR driver and its shared-memory protocol |
 | `src/UI/` | Dashboard assets and Lit components |
 | `installer/` | Windows icon resources and Inno Setup definition |
 

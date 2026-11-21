@@ -1,0 +1,41 @@
+{
+  "jsonid": "input_profile",
+  "controller_type": "multitron_controller",
+  "device_class": "TrackedDeviceClass_Controller",
+  "input_bindingui_mode": "single_device",
+  "should_show_binding_errors": true,
+  "input_bindingui_right": {
+    "image": "{multitron}/icons/multitron_controller.svg"
+  },
+  "input_source": {
+    "/input/thumbstick": {
+      "type": "joystick",
+      "x": true,
+      "y": true,
+      "click": true,
+      "order": 1,
+      "binding_image_point": [200, 110]
+    },
+    "/input/trigger": {
+      "type": "trigger",
+      "value": true,
+      "order": 2,
+      "binding_image_point": [200, 40]
+    },
+    "/input/a": {
+      "type": "button",
+      "click": true,
+      "order": 3,
+      "binding_image_point": [140, 205]
+    },
+    "/input/b": {
+      "type": "button",
+      "click": true,
+      "order": 4,
+      "binding_image_point": [260, 205]
+    },
+    "/output/haptic": {
+      "type": "vibration"
+    }
+  }
+}

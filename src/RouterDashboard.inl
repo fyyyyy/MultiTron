@@ -84,6 +84,20 @@ public:
         };
         const long xboxAxis = VJoyOutput::centrePosition() + static_cast<long>(std::lround(
             (axis - VJoyOutput::centrePosition()) * app_.xboxStrength.load() / 100.0));
+        const long steamvrAxisPosition = VJoyOutput::centrePosition() + static_cast<long>(std::lround(
+            (axis - VJoyOutput::centrePosition()) * app_.steamvrStrength.load() / 100.0));
+        const bool steamvrOn = app_.steamvrEnabled.load();
+        const char* steamvrStatus = !steamvrOn ? "Disabled"
+            : !app_.steamvr.isReady() ? "Shared memory unavailable"
+            : app_.steamvr.driverConnected() ? "SteamVR driver connected"
+            : "Waiting for the SteamVR driver (SteamVR running and driver registered?)";
+        const long openxrAxisPosition = VJoyOutput::centrePosition() + static_cast<long>(std::lround(
+            (axis - VJoyOutput::centrePosition()) * app_.openxrStrength.load() / 100.0));
+        const bool openxrOn = app_.openxrEnabled.load();
+        const char* openxrStatus = !openxrOn ? "Disabled"
+            : !app_.steamvr.isReady() ? "Shared memory unavailable"
+            : app_.steamvr.layerConnected() ? "OpenXR layer connected"
+            : "Waiting for a VR game (is the OpenXR layer registered? See README)";
         const long vjoyUnscaledAxis = VJoyOutput::centrePosition() + static_cast<long>(std::lround(
             static_cast<double>(axis - VJoyOutput::centrePosition()) / app_.strength.load()));
         const double loudnessOutput = loudnessEnabled && app_.sessionUsingLoudness.load()
@@ -97,6 +111,12 @@ public:
             + ",vjoyUnscaledOutput:" + std::to_string(percent(vjoyUnscaledAxis, centre, range))
             + ",xboxOutput:" + std::to_string(percent(xboxAxis, centre, range))
             + ",xboxUnscaledOutput:" + std::to_string(percent(axis, centre, range))
+            + ",steamvrOutput:" + std::to_string(percent(steamvrAxisPosition, centre, range))
+            + ",steamvrUnscaledOutput:" + std::to_string(percent(axis, centre, range))
+            + ",steamvrStatus:" + quote(steamvrStatus)
+            + ",openxrOutput:" + std::to_string(percent(openxrAxisPosition, centre, range))
+            + ",openxrUnscaledOutput:" + std::to_string(percent(axis, centre, range))
+            + ",openxrStatus:" + quote(openxrStatus)
             + ",mouse:" + std::to_string(percent(mouse, centre, range))
             + ",mouseRaw:" + std::to_string(mouseEnabled ? app_.rawMouseDelta.load() : 0)
             + ",mouseSmoothed:" + std::to_string(mouseEnabled ? app_.averagedMouseDelta.load() : 0)
@@ -204,6 +224,12 @@ private:
             + ",loudnessSmoothing:" + std::to_string(app_.loudnessRpmSmoothing.load())
             + ",loudnessRadius:" + std::to_string(app_.loudnessWheelRadius.load())
             + ",xboxStrength:" + std::to_string(app_.xboxStrength.load())
+            + ",steamvrStrength:" + std::to_string(app_.steamvrStrength.load())
+            + ",steamvr:" + (app_.steamvrEnabled.load() ? "true" : "false")
+            + ",steamvrAxis:" + std::to_string(app_.steamvrAxis.load())
+            + ",openxrStrength:" + std::to_string(app_.openxrStrength.load())
+            + ",openxr:" + (app_.openxrEnabled.load() ? "true" : "false")
+            + ",openxrAxis:" + std::to_string(app_.openxrAxis.load())
             + ",smoothing:" + std::to_string(app_.smoothing.load())
             + ",inputUpdateInterval:" + std::to_string(app_.inputUpdateIntervalMs.load())
             + ",mouseRotationDelta:" + std::to_string(app_.mouseRotationDelta.load())

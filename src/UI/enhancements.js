@@ -89,8 +89,8 @@
     var keyboard = selectedOutput() === 'keyboard', metric = document.getElementById('outputMetric');
     metric.style.display = keyboard ? 'none' : 'block';
     var unscaled = document.getElementById('outputUnscaled'); unscaled.style.display = keyboard ? 'none' : 'inline';
-    unscaled.querySelector('b').textContent = Math.round(selectedOutput() === 'xbox' ? lastState.xboxUnscaledOutput : lastState.vjoyUnscaledOutput);
-    document.getElementById('outputNumber').textContent = Math.round(selectedOutput() === 'xbox' ? lastState.xboxOutput : lastState.vjoyOutput);
+    unscaled.querySelector('b').textContent = Math.round(selectedOutput() === 'xbox' ? lastState.xboxUnscaledOutput : selectedOutput() === 'steamvr' ? lastState.steamvrUnscaledOutput : selectedOutput() === 'openxr' ? lastState.openxrUnscaledOutput : lastState.vjoyUnscaledOutput);
+    document.getElementById('outputNumber').textContent = Math.round(selectedOutput() === 'xbox' ? lastState.xboxOutput : selectedOutput() === 'steamvr' ? lastState.steamvrOutput : selectedOutput() === 'openxr' ? lastState.openxrOutput : lastState.vjoyOutput);
     document.getElementById('outputUnit').style.display = keyboard ? 'none' : 'inline';
   }
   var originalConfig = window.RouterConfig;

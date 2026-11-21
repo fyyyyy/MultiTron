@@ -120,6 +120,14 @@ struct App {
     std::atomic<bool> xboxTriggersFlipped{false};
     std::atomic<wchar_t> xboxXLeftKey{L'A'};
     std::atomic<wchar_t> xboxXRightKey{L'D'};
+    std::atomic<bool> steamvrEnabled{false};
+    std::atomic<long> steamvrStrength{kDefaultMovementStrength};
+    // 0 joystick X, 1 joystick Y, 2 trigger (forward only)
+    std::atomic<int> steamvrAxis{1};
+    // OpenXR layer: added to the real left thumbstick. 0 = X, 1 = Y.
+    std::atomic<bool> openxrEnabled{false};
+    std::atomic<long> openxrStrength{kDefaultMovementStrength};
+    std::atomic<int> openxrAxis{1};
     std::atomic<int> lastDirection{1};
     unsigned long lastAudioPulseSequence = 0;
     struct KeyMapping {
@@ -147,6 +155,7 @@ struct App {
     std::mutex outputMutex;
     VJoyOutput vjoy;
     XboxOutput xbox;
+    SteamVROutput steamvr;
     InterceptionInput interception;
     AudioCadenceInput audioCadence;
 };

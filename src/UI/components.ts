@@ -8,3 +8,5 @@ import "./components/output-tabs";
 import "./components/vjoy-output";
 import "./components/keyboard-output";
 import "./components/xbox-output";
+import "./components/steamvr-output";
+import "./components/openxr-output";
